@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="cafe_sales.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1110"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="dirty_cafe_sales" custom_title="0" dock_id="1" table="4,16:maindirty_cafe_sales"/><dock_state state="000000ff00000000fd0000000100000002000003560000032bfc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000000003560000010100ffffff0000027e0000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">UPDATE cafe_sales_clean
+SET &quot;Transaction Date&quot; =
+  substr(&quot;Transaction Date&quot;, 7, 4) || '-' ||
+  substr(&quot;Transaction Date&quot;, 4, 2) || '-' ||
+  substr(&quot;Transaction Date&quot;, 1, 2)
+WHERE &quot;Transaction Date&quot; LIKE '__/__/____';
+
+SELECT min (&quot;Transaction Date&quot;), MAX(&quot;Transaction Date&quot;)
+FROM cafe_sales_clean
+
+
+
+
+
+
+UPDATE cafe_sales_clean
+SET &quot;Price Per Unit&quot; = 1.0 * &quot;Total Spent&quot; / Quantity
+WHERE (&quot;Price Per Unit&quot; IS NULL OR &quot;Price Per Unit&quot; NOT GLOB '[0-9]*')
+  AND &quot;Total Spent&quot; GLOB '[0-9]*'
+  AND Quantity GLOB '[0-9]*';
+  
+  
+  SELECT COUNT(*)
+FROM cafe_sales_clean
+WHERE Quantity IS NULL OR Quantity NOT GLOB '[0-9]*'
+   OR &quot;Total Spent&quot; IS NULL OR &quot;Total Spent&quot; NOT GLOB '[0-9]*'
+   OR &quot;Price Per Unit&quot; IS NULL OR &quot;Price Per Unit&quot; NOT GLOB '[0-9]*';
+   
+   
+   
+   
+   UPDATE cafe_sales_clean
+SET Item = CASE &quot;Price Per Unit&quot;
+  WHEN 1 THEN 'Cookie'
+  WHEN 1.5 THEN 'Tea'
+  WHEN 2 THEN 'Coffee'
+  WHEN 5 THEN 'Salad'
+END
+WHERE Item = 'Unknown'
+  AND &quot;Price Per Unit&quot; IN (1, 1.5, 2, 5);
+  
+  
+  
+  
+  UPDATE cafe_sales_clean
+SET Item = CASE &quot;Price Per Unit&quot;
+  WHEN 1 THEN 'Cookie'
+  WHEN 1.5 THEN 'Tea'
+  WHEN 2 THEN 'Coffee'
+  WHEN 5 THEN 'Salad'
+END
+WHERE Item = 'Unknown'
+  AND &quot;Price Per Unit&quot; IN (1, 1.5, 2, 5);
+  
+  
+  
+  SELECT &quot;Price Per Unit&quot;, typeof(&quot;Price Per Unit&quot;) AS stored_as, COUNT(*) AS total
+FROM cafe_sales_clean
+WHERE Item = 'Unknown'
+GROUP BY &quot;Price Per Unit&quot;
+ORDER BY total DESC;
+
+
+ALTER TABLE cafe_sales_clean ADD COLUMN needs_review INTEGER DEFAULT 0;
+
+
+
+
+
+UPDATE cafe_sales_clean
+SET needs_review = 1
+WHERE Quantity IS NULL OR Quantity NOT GLOB '[0-9]*'
+   OR &quot;Total Spent&quot; IS NULL OR &quot;Total Spent&quot; NOT GLOB '[0-9]*'
+   OR &quot;Price Per Unit&quot; IS NULL OR &quot;Price Per Unit&quot; NOT GLOB '[0-9]*';
+   
+   
+   SELECT needs_review,
+   count(*) AS total
+   FROM cafe_sales_clean
+   GROUP BY needs_review;</sql><current_tab id="0"/></tab_sql></sqlb_project>
