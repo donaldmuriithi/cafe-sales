@@ -53,7 +53,9 @@ Only 26 rows (0.26%) stayed unusable.
 ![Dates standardised](screenshots/07_dates_standardised_9540.png)
 
 **8. The cleaned table, ready for analysis.**
-![Cleaned table in Excel](screenshots/08_cleaned_table.png)## Results
+![Cleaned table in Excel](screenshots/08_cleaned_table.png)
+
+## Results
 
 - **Total revenue:** 89,042 across 9,974 reliable transactions (average sale 8.93)
 - **Salad earns 21% of revenue**, but only because it costs 5. Each item sells about 1,100 to 1,300 times, so the ranking follows price, not popularity.
