@@ -55,7 +55,37 @@ Only 26 rows (0.26%) stayed unusable.
 **8. The cleaned table, ready for analysis.**
 ![Cleaned table in Excel](screenshots/08_cleaned_table.png)
 
-## Results
+## The cleaning process
+
+**The same six transactions, before and after.** Each fix follows a rule the data can prove.
+![Dirty vs clean rows](dirty_vs_clean_rows.png)
+
+**Bad values per column, before and after.** Numbers were rebuilt from the data. Gaps that could not be proven were labelled "Unknown", never guessed.
+![Bad values before and after](bad_values_before_after.png)
+
+**The key insight.** Each item has one fixed price, but only four prices (1, 1.5, 2 and 5) belong to a single item. Prices 3 (Cake, Juice) and 4 (Sandwich, Smoothie) are shared, so those items can't be recovered from price alone.
+
+**Example: recovering the item from its price.**
+```sql
+UPDATE cafe_sales_clean
+SET Item = CASE "Price Per Unit"
+  WHEN 1   THEN 'Cookie'
+  WHEN 1.5 THEN 'Tea'
+  WHEN 2   THEN 'Coffee'
+  WHEN 5   THEN 'Salad'
+END
+WHERE Item = 'Unknown'
+  AND "Price Per Unit" IN (1, 1.5, 2, 5);
+```
+
+**Example: rebuilding a missing total.**
+```sql
+UPDATE cafe_sales_clean
+SET "Total Spent" = Quantity * "Price Per Unit"
+WHERE "Total Spent" IN ('ERROR','UNKNOWN') OR "Total Spent" IS NULL;
+```
+
+The full script is in `cafe_sales_cleaning.sql`.## Results
 
 - **Total revenue:** 89,042 across 9,974 reliable transactions (average sale 8.93)
 - **Salad earns 21% of revenue**, but only because it costs 5. Each item sells about 1,100 to 1,300 times, so the ranking follows price, not popularity.
