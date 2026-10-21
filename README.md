@@ -29,31 +29,7 @@ A portfolio project that takes a deliberately messy dataset and turns it into a 
 
 Only 26 rows (0.26%) stayed unusable.
 
-## The cleaning process in screenshots
-
-**1. Finding the damage.** Payment Method hid three kinds of bad value: NULL, ERROR and UNKNOWN. I standardised all of them to one label, "Unknown", in a single UPDATE (3,178 rows).
-![Payment method counts and the update](screenshots/01_payment_before_and_fix.png)
-
-**2. The same problem in Item.**
-![Item counts before cleaning](screenshots/02_item_before.png)
-
-**3. And in Quantity.**
-![Quantity counts before cleaning](screenshots/03_quantity_before.png)
-
-**4. The key insight: every item has exactly one price.** That means a missing item can be recovered from its price, and a missing price from its item.
-![Price per item](screenshots/04_price_per_item.png)
-
-**5. Recovering missing items from price (468 rows).**
-![Item recovered from price](screenshots/05_item_recovered_468.png)
-
-**6. Recovering missing prices from items (479 rows).**
-![Price recovered from item](screenshots/06_price_recovered_479.png)
-
-**7. Standardising dates to YYYY-MM-DD (9,540 rows).**
-![Dates standardised](screenshots/07_dates_standardised_9540.png)
-
-**8. The cleaned table, ready for analysis.**
-![Cleaned table in Excel](screenshots/08_cleaned_table.png)
+_table.png)
 
 ## The cleaning process
 
